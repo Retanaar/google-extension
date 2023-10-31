@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "Starboard marketing manager",
+  "version": "1.0",
+  "description": "Starboard Extension to manage marketing campaigns",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "clipboardWrite",
+    "clipboardRead"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "type": "module"
+    }
+  ],
+  "web_accessible_resources": [{
+    "matches": ["<all_urls>"],
+    "resources": ["common.js",
+      "modules/pageUidResolver.js",
+      "modules/utils.js",
+      "config.js",
+      "modules/editPageUpdater.js",
+      "modules/generateContent.js",
+      "modules/copyToClipboard.js",
+      "modules/dataLoader.js",
+      "modules/utmMarkersService.js",
+      "modules/campaignService.js",
+      "modules/feeService.js",
+      "modules/localDataStore.js",
+      "modules/dataAddService.js",
+      "modules/settings.js"
+    ]
+  }],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module",
+    "minimum_chrome_version": "92"
+  }
+}

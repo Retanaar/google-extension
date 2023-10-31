@@ -1,0 +1,379 @@
+<html>
+<head>
+    <title>URL Extension Popup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="libs/micromodal/micromodal.css">
+    <style>
+        /* CSS Variables */
+        body {
+            width: 800px;
+            max-height: 600px;
+            padding: 8px;
+            margin: 0;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* CSS Variables */
+        :root {
+            --select-width: 150px; /* Initial width */
+            --select-width: 135px;
+        }
+
+        /* Style for the buttons and container */
+        .control-button {
+            display: block;
+            width: calc(var(--select-width) - 40px); /* Adjust width for inline buttons */
+            text-align: left;
+            padding: 5px;
+        }
+
+        /* Style for the selects */
+        .control-select {
+            display: block;
+            width: var(--select-width); /* Use the CSS variable for width */
+            padding: 5px;
+            margin-bottom: 3px; /* Add vertical space */
+        }
+
+        /* Style for the winred-page-setup-controls div */
+        #winred-page-setup-controls, #winred-page-setup-info-block, #winred-page-setup-buttons, #winred-page-setup-capaign-fees, .winred-page-setup-buttons, #winred-page-setup-utms {
+            border: 1px solid #ccc; /* Add 1px border */
+            padding: 5px; /* Add some padding for spacing */
+            position: relative; /* Required for positioning */
+            margin-bottom: 10px; /* Add vertical space between bordered blocks */
+        }
+
+        #winred-page-setup-controls div {
+            display: flex;
+            justify-content: flex-start;
+            align-items: baseline;
+        }
+
+        #winred-page-setup-controls div .control-button {
+            margin-right: 5px;
+        }
+
+
+        #winred-page-setup-capaign-fees div {
+            width: 235px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        #winred-page-setup-capaign-fees div .control-button {
+            margin-right: 5px;
+        }
+
+        #winred-page-setup-capaign-fees {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        #winred-page-setup-capaign-fees #winred-page-setup-fee-one-input,
+        #winred-page-setup-capaign-fees #winred-page-setup-fee-two-input  {
+            width: var(--select-width);
+            height: 29px;
+            /* margin-right: 5px; */
+        }
+
+        /* Style for labels in winred-page-setup-info-block */
+        .info-label {
+            font-weight: bold;
+            display: inline-block;
+            width: var(--select-width); /* Width equal to button */
+            text-align: left;
+            margin-bottom: 5px; /* Add vertical space between label and span */
+        }
+
+        #winred-page-setup-info-block span,
+        #winred-page-setup-info-block div {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+
+        /* Style for spans in winred-page-setup-info-block */
+        .info-span {
+            display: inline-block;
+            width: 100%; /* Non-limited width */
+            text-align: left;
+            margin-bottom: 5px; /* Add vertical space between spans */
+        }
+
+        /* New styles to spread controls as a matrix */
+        .control-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        /* Style for buttons in the winred-page-setup-buttons block */
+        #winred-page-setup-buttons, .winred-page-setup-buttons {
+            display: flex;
+            justify-content: flex-end; /* Align buttons to the right */
+            align-items: flex-end; /* Align buttons to the bottom */
+            /* margin-top: 15px; Add space between blocks */
+        }
+
+        /* Style for the Push data button */
+        #winred-page-setup-push-generated-data, #winred-page-setup-refresh-all-btn, #winred-page-setup-new-campaign {
+            margin-left: 10px; /* Add space between buttons */
+            width: calc(var(--select-width)); /* Match width of buttons */
+        }
+
+        #winred-page-setup #winred-page-setup-buttons,
+        #winred-page-setup .winred-page-setup-buttons {
+            margin-top: -11px;
+        }
+
+        #winred-page-setup-buttons .control-button,
+        .winred-page-setup-buttons .control-button {
+            padding: 2px 5px;
+            width: 135px;
+        }
+
+        #winred-page-setup-info-block .info-label {
+            display: block;
+            width: 140px;
+            margin-bottom: 0;
+            flex-shrink: 0;
+        }
+        #winred-page-setup-info-block .info-span {
+            text-wrap: nowrap;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+
+        #winred-page-setup-info-block input {
+            display: block;
+        }
+
+        #winred-page-setup-info-block img {
+            max-width: 20px;
+            max-height: 20px;
+            display: inline-block;
+        }
+
+        .copy-btn {
+            padding: 0px;
+            margin: 0;
+            width: 20px;
+            height: 20px;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        input#winred-page-setup-public-name-input {
+            width: 40%;
+        }
+
+        .winred-page-setup-public-name-input, .winred-page-setup-page-base-url-subdomain {
+            margin-left: 30px;
+        }
+
+        #winred-page-setup-utms div {
+            margin-bottom: 5px;
+        }
+        #winred-page-setup-utms div:nth-child(3),
+        #winred-page-setup-utms div:nth-child(4) {
+            margin-bottom: 0;
+        }
+
+        #winred-page-setup-utms input {
+            width: var(--select-width);
+            height: 29px;
+            margin-right: 5px;
+        }
+        #winred-page-setup-utms .info-label {
+            font-size: 14px;
+        }
+        .input-error {
+            font-weight: bold;
+            color: red;
+        }
+        .last-block-buttons {
+            display: flex;
+            justify-content: space-between!important;
+            align-items: center!important;
+        }
+        .last-block-buttons div {
+            display: flex;
+        }
+        #winred-page-setup-capaign-fees div:first-child,
+        #winred-page-setup-capaign-fees div:nth-child(2) {
+            flex-wrap: wrap;
+            max-width: 235px;
+        }
+        #winred-page-setup-capaign-fees div:first-child .control-select,
+        #winred-page-setup-capaign-fees div:nth-child(2) .control-select {
+            margin-left: 100px;
+            margin-top: 5px;
+        }
+
+    </style>
+    <script type="module" src="libs/micromodal/micromodal.min.js"></script>
+    <script type="module" src="popup.js"></script>
+</head>
+<body>
+<div>
+    <div id="popup-content">Loading ...</div>
+</div>
+
+
+<!-- Templates -->
+
+<!-- Primary -->
+<div id="winred-page-setup" style="display: none;">
+
+    <div id="winred-page-setup-controls" class="control-container">
+        <div>
+            <button class="control-button" data-type="client" data-action="load">Client</button>
+            <select class="control-select" data-type="client" data-key="client"></select>
+            <button data-type="client" data-action="add">+</button>
+        </div>
+        <div>
+            <button class="control-button" data-type="campaign" data-action="load">SlugCampaign</button>
+            <select class="control-select" data-type="campaign" data-key="campaign"></select>
+            <button data-type="campaign" data-action="add">+</button>
+        </div>
+        <div>
+            <button class="control-button" data-type="pageType" data-action="load">Page Type</button>
+            <select class="control-select" data-type="pageType" data-key="pageType"></select>
+            <button data-type="pageType" data-action="add">+</button>
+        </div>
+        <div>
+            <button class="control-button" data-type="issueOrTopic" data-action="load">Issue/Topic</button>
+            <select class="control-select" data-type="issueOrTopic" data-key="issueOrTopic"></select>
+            <button data-type="issueOrTopic" data-action="add">+</button>
+        </div>
+        <div>
+            <button class="control-button" data-type="agency" data-action="load">Agency</button>
+            <select class="control-select" data-type="agency" data-key="agency"></select>
+            <button data-type="agency" data-action="add">+</button>
+        </div>
+        <div>
+            <button class="control-button" data-type="medium" data-action="load">Medium</button>
+            <select class="control-select" data-type="medium" data-key="medium"></select>
+            <button data-type="medium" data-action="add">+</button>
+        </div>
+        <div>
+            <button class="control-button" data-type="source" data-action="load">Source</button>
+            <select class="control-select" data-type="source" data-key="source"></select>
+            <button data-type="source" data-action="add">+</button>
+        </div>
+    </div>
+    <div class="winred-page-setup-buttons">
+        <button id="winred-page-setup-reset-data" class="control-button">Reset</button>
+        <button id="winred-page-setup-refresh-all-btn" class="control-button">Refresh All</button>
+    </div>
+    <div id="winred-page-setup-capaign-fees">
+        <div>
+            <button class="control-button" data-type="fee" id="winred-page-setup-fee-one-button" data-action="load">Fee</button>
+            <input type="text" id="winred-page-setup-fee-one-input" value="100%">
+            <select class="control-select" id="winred-page-setup-fee-one-select" data-type="fee" data-key="feeOne"></select>
+        </div>
+        <div>
+            <button class="control-button" data-type="fee" id="winred-page-setup-fee-two-button" data-action="load">Fee</button>
+            <input type="text" id="winred-page-setup-fee-two-input" value="100%">
+            <select class="control-select" id="winred-page-setup-fee-two-select" data-type="fee" data-key="feeTwo"></select>
+        </div>
+        <div>
+            <button class="control-button" data-type="onPage" data-action="load">On Page</button>
+            <select class="control-select" data-type="onPage" data-key="onPage"></select>
+        </div>
+    </div>
+    <div id="winred-page-setup-utms" class="control-container">
+        <div>
+            <label class="info-label" for="winred-page-setup-utms-source">UTM Source:</label>
+            <input type="text" id="winred-page-setup-utms-source" value="">
+        </div>
+        <div>
+            <label class="info-label" for="winred-page-setup-utms-medium">UTM Medium:</label>
+            <input type="text" id="winred-page-setup-utms-medium" value="">
+        </div>
+        <div>
+            <label class="info-label" for="winred-page-setup-utms-campaign">UTM SlugCampaign:</label>
+            <input type="text" id="winred-page-setup-utms-campaign" value="">
+        </div>
+        <div>
+            <label class="info-label" for="winred-page-setup-utms-content">UTM Content:</label>
+            <input type="text" id="winred-page-setup-utms-content" value="">
+        </div>
+    </div>
+    <div id="winred-page-setup-info-block">
+            <span>
+                <button class="copy-btn" data-element-id="winred-page-setup-internal-name-input"><img src="https://content.freelancehunt.com/message/thumbnail/225/09f8f/64588/3607777/copyIcon.png" alt=""></button>
+                <label class="info-label" for="winred-page-setup-internal-name-input">Internal Name:</label>
+                <span class="info-span" id="winred-page-setup-internal-name-input">Sample Internal Name</span>
+            </span>
+        <div>
+            <button class="copy-btn" data-element-id="winred-page-setup-slug-input"><img src="https://content.freelancehunt.com/message/thumbnail/225/09f8f/64588/3607777/copyIcon.png" alt=""></button>
+            <label class="info-label" for="winred-page-setup-slug-input">Slug:</label>
+            <span class="info-span" id="winred-page-setup-slug-input">sample-slug</span>
+        </div>
+        <div>
+            <label class="info-label winred-page-setup-public-name-input" for="winred-page-setup-public-name-input">Public Name:</label>
+            <input type="text" id="winred-page-setup-public-name-input" value="Sample Public Name">
+        </div>
+        <div>
+            <button class="copy-btn" data-element-id="winred-page-setup-source-code-input"><img src="https://content.freelancehunt.com/message/thumbnail/225/09f8f/64588/3607777/copyIcon.png" alt=""></button>
+            <label class="info-label" for="winred-page-setup-source-code-input">Source code:</label>
+            <span class="info-span" id="winred-page-setup-source-code-input">Sample Source Code</span>
+        </div>
+        <div>
+            <button class="copy-btn" data-element-id="winred-page-setup-page-base-url"><img src="https://content.freelancehunt.com/message/thumbnail/225/09f8f/64588/3607777/copyIcon.png" alt=""></button>
+            <label class="info-label" for="winred-page-setup-page-base-url">BaseUrl:</label>
+            <span class="info-span" id="winred-page-setup-page-base-url"></span>
+        </div>
+        <div>
+            <label class="info-label winred-page-setup-page-base-url-subdomain" for="winred-page-setup-page-base-url-subdomain">Subdomain:</label>
+            <input type="checkbox" id="winred-page-setup-page-base-url-subdomain">
+        </div>
+        <div>
+            <button class="copy-btn" data-element-id="winred-page-setup-page-revv-uid-input"><img src="https://content.freelancehunt.com/message/thumbnail/225/09f8f/64588/3607777/copyIcon.png" alt=""></button>
+            <label class="info-label" for="winred-page-setup-page-revv-uid-input">PageRevvUID:</label>
+            <span class="info-span" id="winred-page-setup-page-revv-uid-input"></span>
+        </div>
+    </div>
+    <div id="winred-page-setup-buttons" class="last-block-buttons">
+        <div>
+            <label class="info-label" for="status-field">Status:</label>
+            <span class="info-span" id="status-field">Initializing ...</span>
+        </div>
+        <div>
+            <button id="winred-page-setup-push-generated-data" class="control-button">Push data</button>
+            <button id="winred-page-setup-new-campaign" class="control-button">New campaign</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- Add data modal -->
+
+<div class="modal micromodal-slide" id="modal-data-add" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+        <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-data-add-title">
+            <header class="modal__header">
+                <h2 class="modal__title" id="modal-data-add-title">Modal Title</h2>
+                <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+            </header>
+            <main class="modal__content" id="modal-data-add-content">
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="Enter name"><br>
+                <label for="id">ID:</label>
+                <input type="text" id="id" placeholder="Enter ID"><br>
+            </main>
+            <footer class="modal__footer">
+                <input type="submit" class="modal__btn modal__btn-primary" value="Login">
+                <a class="dark-blue f6 js-modal-close-trigger ml2 no-underline underline-hover" href="#" aria-label="Close this dialog window">Cancel</a>
+            </footer>
+        </div>
+    </div>
+</div>
+
+</body></html>

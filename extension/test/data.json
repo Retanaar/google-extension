@@ -1,0 +1,44 @@
+{
+  "name": null,
+  "sourceUrl": "https://donate.americanprinciplesproject.org/confirm_acb",
+  "baseUrl": "https://donate.americanprinciplesproject.org/confirm_acb",
+  "parameters": null,
+  "utmSource": "",
+  "utmMedium": "",
+  "utmCampaign": "",
+  "utmContent": "",
+  "campaignDate": "2023-09-11",
+  "agencyId": "Starboard",
+  "pageType": "Poll",
+  "medium": "Display",
+  "agencySlug": "confirm_acb____",
+  "platformPid": "rv_page_01emf4jcjefzx1tzmq4v4n1m0s",
+  "client": {
+    "oid": "rv_org_T4RX7bbQsDjwHULxovqLGtrY",
+    "name": "AMAC Action"
+  },
+  "fees": [
+    {
+      "fee": "12.000",
+      "onPage": "NONE",
+      "active": "2023-09-11",
+      "inactive": null,
+      "feeType": {
+        "shortName": "CPS",
+        "longName": "Cost per send",
+        "multiplier": "1.000"
+      }
+    },
+    {
+      "fee": "34.000",
+      "onPage": "NONE",
+      "active": "2023-09-11",
+      "inactive": null,
+      "feeType": {
+        "shortName": "Flat",
+        "longName": "% placement fee",
+        "multiplier": "1.000"
+      }
+    }
+  ]
+}
